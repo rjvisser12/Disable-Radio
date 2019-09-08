@@ -10,9 +10,6 @@ namespace Disable_Radio
         private bool enabled;
         private readonly int cheatString;
 
-        private Ped PlayerPed = Game.Player.Character;
-        private Vehicle Vehicle = Game.Player.Character.CurrentVehicle;
-
         public Disable_Radio()
         {
             enabled = Settings.GetValue("SETTINGS", "ENABLED_ON_STARTUP", true);
@@ -28,16 +25,26 @@ namespace Disable_Radio
             {
                 enabled = !enabled;
 
-                if (!enabled)
+                if (!enabled && Game.Player.Character.IsInVehicle())
                 {
-                    //start radio script when disable
-                    Function.Call(Hash.SET_VEHICLE_RADIO_ENABLED, Game.Player.Character.CurrentVehicle, false);
+                    Vehicle veh = Game.Player.Character.CurrentVehicle;
+
+                    if (veh != null && veh.Exists() && veh.IsAlive)
+                    {
+                        //enable radio when disable mod
+                        Function.Call(Hash.SET_VEHICLE_RADIO_ENABLED, veh, false);
+                    }
                 }
             }
 
-            if (enabled)
+            if (enabled && Game.Player.Character.IsInVehicle())
             {
-                Function.Call(Hash.SET_VEHICLE_RADIO_ENABLED, Game.Player.Character.CurrentVehicle, true);
+                Vehicle veh = Game.Player.Character.CurrentVehicle;
+
+                if (veh != null && veh.Exists() && veh.IsAlive)
+                {
+                    Function.Call(Hash.SET_VEHICLE_RADIO_ENABLED, Game.Player.Character.CurrentVehicle, true);
+                }
             }
         }
     }
