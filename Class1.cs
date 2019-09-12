@@ -60,7 +60,6 @@ namespace Disable_Radio
             if (e.KeyCode == Toggle_Radio)
             {
                 enabled = !enabled;
-                UI.ShowSubtitle("~g~TESTTTTTTTTTT~g~");
 
                 if (!enabled && Game.Player.Character.IsInVehicle())
                 {
